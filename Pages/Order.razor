@@ -1,16 +1,46 @@
 ﻿@inject NavigationManager NavigationManager
+@inject Coffeeapp.Data.Services.Order OrderService
 @page "/Order"
+
 
 <h3>coffeeOrder</h3>
 
-<MudPaper Height="400px" Width="100%">
-    <MudContainer MaxWidth="MaxWidth.Small">
-        
-    </MudContainer>
-</MudPaper>
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+
+                <MudTextField Label="Phone" HelperText="Enter User Phone" Class="mt-3"
+                @bind-Value="_phone" InputType="InputType.Text" />
+
+                <MudTextField Label=" Coffee" HelperText="Enter Coffee Name" Class="mt-3"
+                @bind-Value="_coffee" InputType="InputType.Text" />
+
+                <MudTextField Label=" Topping " HelperText="Enter topping Name" Class="mt-3"
+                @bind-Value="_topping" InputType="InputType.Text" />
+
+
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Order</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+</MudGrid>
 
 
 @code {
 
+    string _phone;
+    string _coffee;
+    string _topping;
+
+    private void OnOrder()
+    {
+        // Qualify the static method with the type name (Order)
+        var orders = OrderService.Create(_coffee, _topping, int.Parse(_phone));
+    }
     
+   
 }

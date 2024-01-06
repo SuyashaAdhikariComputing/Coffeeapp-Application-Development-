@@ -1,0 +1,42 @@
+﻿@page "/Login"
+@layout EmptyLayout
+
+@inject NavigationManager NavigationManager
+
+@using System.Diagnostics;
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+               
+                <MudTextField Label="Password" HelperText="Enter a valid password" Class="mt-3"
+                @bind-Value="_password" InputType="InputType.Password" />
+
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="OnLogin">Login</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+</MudGrid>
+
+
+@code {
+    string _password;
+
+
+    private void OnLogin()
+    {
+        if (_password == "admin")
+        {
+            NavigationManager.NavigateTo("/Admin");
+        }
+        if (_password == "staff")
+        {
+            NavigationManager.NavigateTo("/Staff");
+        }
+    }
+
+}

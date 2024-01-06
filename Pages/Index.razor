@@ -1,27 +1,23 @@
 ﻿@page "/"
 
 
+
+
 @inject NavigationManager NavigationManager
 
 
-<h3>coffeeOrder</h3>
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" @OnClick="NavigateToRegister">Primary</MudButton>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" @OnClick="NavigateToPlaceOrder">Primary</MudButton>
 
 @code {
 
-    private void NavigateToRegister()
+
+    protected override void OnInitialized()
     {
-        // Navigate to the "register" page
-        NavigationManager.NavigateTo("/register");
+        NavigationManager.NavigateTo("/Login");
+
+        base.OnInitialized();
     }
 
-    private void NavigateToPlaceOrder()
-    {
-        // Navigate to the "register" page
-        NavigationManager.NavigateTo("/Order");
-    }
-
+   
 }
 
