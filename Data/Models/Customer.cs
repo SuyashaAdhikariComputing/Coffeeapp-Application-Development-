@@ -7,13 +7,9 @@ using System.Threading.Tasks;
 namespace Coffeeapp.Data.Models
 {
 
-    public class OrderItem
+    public class Customer
     {
-        public int Id { get; set; }
-        public string Coffee { get; set; }
-        public string Topping { get; set; }
-
+        public string Name { get; set; }
         public string Phone { get; set; }
     }
 }
-

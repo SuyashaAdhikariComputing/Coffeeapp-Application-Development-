@@ -5,53 +5,77 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Coffeeapp.Data.Models;
-
-
+using Coffeeapp.Data.Utils;
+using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace Coffeeapp.Data.Services
 {
 
     public class OrderService
     {
-        private List<OrderItem> Order;
-        private readonly string filePath = "Order.json";
-        private int nextId = 1;
-
-        public List<OrderItem> GetUser(string Phone)
+        
+        private static void SaveAll(string Phone, List<OrderItems> Order)
         {
-            if (Order == null)
+            string appDataDirectoryPath = Utils.GetAppDirectoryPath();
+            string OrderFilePath = Utils.GetCustomerFilePath(string Phone);
+
+            if (!Directory.Exists(appDataDirectoryPath))
             {
-                // Handle the case where 'Order' is null
-                return new List<OrderItem>();
+                Directory.CreateDirectory(appDataDirectoryPath);
             }
 
-            return Order.Where(t => t.Phone == Phone).ToList();
+            var json = JsonSerializer.Serialize(Order);
+            File.WriteAllText(OrderFilePath, json);
         }
 
-        public void AddOrder(string Phone, string Topping, string Coffee)
+        private static void SaveAll(Guid OrderId, List<OrderItems> Order)
         {
-            var newOrder = new OrderItem { Id = nextId++, Phone = Phone, Topping = Topping, Coffee = Coffee };
-            Order.Add(newOrder);
-            SaveOrder();
-        }
+            string appDataDirectoryPath = Utils.GetAppDirectoryPath();
+            string AllOrderFilePath = Utils.GetOrderFilePath();
 
-        private void SaveOrder()
-        {
-            string json = JsonSerializer.Serialize(Order);
-            File.WriteAllText(filePath, json);
-        }
-
-        private void LoadTodos()
-        {
-            try
+            if (!Directory.Exists(appDataDirectoryPath))
             {
-                string json = File.ReadAllText(filePath);
-                Order = JsonSerializer.Deserialize<List<OrderItem>>(json) ?? new List<OrderItem>();
+                Directory.CreateDirectory(appDataDirectoryPath);
             }
-            catch (Exception)
+
+            var json = JsonSerializer.Serialize(Order);
+            File.WriteAllText(AllOrderFilePath, json);
+        }
+
+        private static void SaveAllUser(Guid OrderId, List<OrderItems> Order)
+        {   
+            string appDataDirectoryPath = Utils.GetAppDirectoryPath();
+            string AllCustomerOrderFilePath = Utils.GetCustomerFilePath(string Phone);
+
+
+            var json = JsonSerializer.Serialize(Order);
+            File.WriteAllText(AllCustomerOrderFilePath, json);
+        }
+
+        public static List<OrderItems> GetAll()
+        {
+            string appOrderFilePath = Utils.GetOrderFilePath();
+            if (!File.Exists(appOrderFilePath))
             {
-                Order = new List<OrderItem>();
+                return new List<OrderItems>();
             }
+
+            var json = File.ReadAllText(appOrderFilePath);
+
+            return JsonSerializer.Deserialize <List<OrderItems>>(json);
+        }
+
+        public static List<OrderItems> GetAllCustomer()
+        {
+            string CustomerOrderFilePath = Utils.GetCustomerFilePath();
+            if (!File.Exists(CustomerOrderFilePath))
+            {
+                return new List<OrderItems>();
+            }
+
+            var json = File.ReadAllText(CustomerOrderFilePath);
+
+            return JsonSerializer.Deserialize<List<OrderItems>>(json);
         }
 
     }

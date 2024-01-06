@@ -1,56 +1,16 @@
-﻿@using Coffeeapp.Data.Models
-@using Coffeeapp.Data.Services
-
-
+﻿@inject NavigationManager NavigationManager
 @page "/Order"
-
 
 <h3>coffeeOrder</h3>
 
-<div>
-    <input @bind="Phone" placeholder="Phone" />
-    <input @bind="Topping" placeholder="Topping" />
-    <input @bind="Coffee" placeholder="Coffee" />
-    <button @onclick="AddOrder">Add Order</button>
-</div>
+<MudPaper Height="400px" Width="100%">
+    <MudContainer MaxWidth="MaxWidth.Small">
+        
+    </MudContainer>
+</MudPaper>
 
-<ul>
-    @foreach (var order in orders)
-    {
-        <li>
-            <strong>Phone:</strong> @order.Phone,
-            <strong>Topping:</strong> @order.Topping,
-            <strong>Coffee:</strong> @order.Coffee
-        </li>
-    }
-</ul>
 
 @code {
 
-    private string Phone;
-    private string Topping;
-    private string Coffee;
-    private List<OrderItem> orders;
-    private OrderService orderService;
-
-    protected override void OnInitialized()
-    {
-        orderService = new OrderService();
-        orders = orderService.GetUser(Phone);
-    }
-
-    private void AddOrder()
-    {
-        if (!string.IsNullOrWhiteSpace(Phone) && !string.IsNullOrWhiteSpace(Topping) && !string.IsNullOrWhiteSpace(Coffee))
-        {
-            orderService.AddOrder(Phone, Topping, Coffee);
-            orders = orderService.GetUser(Phone); // Refresh the list after adding an order
-                                                  // Reset input fields
-            Phone = string.Empty;
-            Topping = string.Empty;
-            Coffee = string.Empty;
-        }
-    }
-    
     
 }
