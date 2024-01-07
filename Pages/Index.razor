@@ -1,21 +1,45 @@
 ﻿@page "/"
-
-
-
-
+@using Coffeeapp.Data.Models
 @inject NavigationManager NavigationManager
+
+@if (_globalState.CurrentUser != null)
+{
+    @if (_globalState.CurrentUser.Role != Role.Admin)
+    {
+        NavigationManager.NavigateTo("/Order");
+    }
+
+    @if (_globalState.CurrentUser.Role != Role.Staff)
+    {
+        NavigationManager.NavigateTo("/Admin");
+    }
+}
+
+<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="logout">Logout</MudButton>
+
+
 
 
 
 
 @code {
 
-
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
     protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo("/Login");
+        if (_globalState.CurrentUser == null)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
 
         base.OnInitialized();
+    }
+
+    public void logout()
+    {
+        _globalState.CurrentUser = null;
+        NavigationManager.NavigateTo("/login");
     }
 
    

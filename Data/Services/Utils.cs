@@ -6,27 +6,33 @@ using System.Threading.Tasks;
 
 namespace Coffeeapp.Data.Services
 {
-
-    public static class Utils
+    internal class Utils
     {
-        public static string GetAppDirectoryPath()
+
+        public static string GetDirectoryPath()
         {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Bislerium"
-            );
+            return Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         }
 
-        public static string GetOrderFilePath()
+
+        public static string GetListedCofeeFilePath()
         {
-            return Path.Combine(GetAppDirectoryPath(), "users.json");
+            return Path.Combine(GetDirectoryPath(), "Listcoffee.json");
         }
 
-        public static string GetCustomerFilePath(int Id)
+        public static string GetCustomerPath()
         {
-            return Path.Combine(GetAppDirectoryPath(), Id.ToString() + "_todos.json");
+            return Path.Combine(GetDirectoryPath(), "customer.json");
         }
+        //getting the JSON Path for Adins
+        public static string GetAddInListPath()
+        {
+            return Path.Combine(GetDirectoryPath(), "Addinslist.json");
+        }
+        public static string GetOrderPath()
+        {
+            return Path.Combine(GetDirectoryPath(), "orders.json");
+        }
+
     }
-
 }
-

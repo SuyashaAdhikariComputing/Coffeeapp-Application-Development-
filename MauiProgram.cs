@@ -18,8 +18,11 @@ namespace Coffeeapp
 				});
 
 			builder.Services.AddMauiBlazorWebView();
-			builder.Services.AddSingleton<Order>();
-			
+            builder.Services.AddSingleton<AddIn>();
+            builder.Services.AddSingleton<CoffeeConfig>();
+            builder.Services.AddSingleton<OrderItem>();
+            builder.Services.AddSingleton<LoginService>();
+
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

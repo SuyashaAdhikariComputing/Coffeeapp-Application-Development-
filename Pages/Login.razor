@@ -1,6 +1,6 @@
 ﻿@page "/Login"
 @layout EmptyLayout
-
+@inject LoginService LoginService
 @inject NavigationManager NavigationManager
 
 @using System.Diagnostics;
@@ -9,6 +9,10 @@
     <MudItem xs="12" sm="7">
         <MudCard>
             <MudCardContent>
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <h4 style="color:red">@_errorMessage</h4>
+                }
                
                 <MudTextField Label="Password" HelperText="Enter a valid password" Class="mt-3"
                 @bind-Value="_password" InputType="InputType.Password" />
@@ -25,17 +29,28 @@
 
 @code {
     string _password;
+    string _errorMessage;
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
 
 
     private void OnLogin()
     {
-        if (_password == "admin")
+        try
         {
-            NavigationManager.NavigateTo("/Admin");
+            if (String.IsNullOrEmpty(_password))
+            {
+                _errorMessage = "Please Provide Password";
+                return;
+            }
+            _globalState.CurrentUser = LoginService.CheckUser(_password);
+            NavigationManager.NavigateTo("/");
+
+
         }
-        if (_password == "staff")
+        catch (Exception e)
         {
-            NavigationManager.NavigateTo("/Staff");
+            _errorMessage = e.Message;
         }
     }
 

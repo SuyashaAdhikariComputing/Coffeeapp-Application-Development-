@@ -1,46 +1,81 @@
-﻿@inject NavigationManager NavigationManager
-@inject Coffeeapp.Data.Services.Order OrderService
-@page "/Order"
+﻿@page "/Admin"
+@using Coffeeapp.Data.Models
+
+<h3>Staff</h3>
+@inject AddIn AddIn
+@inject OrderItem OrderItem
+@inject NavigationManager NavigationManager
+
+<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="logout">Logout</MudButton>
+
+<MudTable Items="@Elements"
+          Dense="@dense"
+          Hover="@hover"
+          Bordered="@bordered"
+          Striped="@striped">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Coffee List</MudText>
+        <MudSpacer />
+    </ToolBarContent>
 
 
-<h3>coffeeOrder</h3>
+    <HeaderContent>
+        <MudTh>Coffee Type</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Action</MudTh>
+    </HeaderContent>
 
-<MudGrid>
-    <MudItem xs="12" sm="7">
-        <MudCard>
-            <MudCardContent>
+    <RowTemplate>
+        <MudTd DataLabel="CoffeeType">@context.Name</MudTd>
+        <MudTd DataLabel="Price">Rs.@context.Price</MudTd>
+        <MudTd DataLabel="Action">
 
-                <MudTextField Label="Phone" HelperText="Enter User Phone" Class="mt-3"
-                @bind-Value="_phone" InputType="InputType.Text" />
+            
 
-                <MudTextField Label=" Coffee" HelperText="Enter Coffee Name" Class="mt-3"
-                @bind-Value="_coffee" InputType="InputType.Text" />
+            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Add" OnClick="@(() => AddItemInCart(context.Id, context.Price, context.Name))" aria-label="Add"></MudIconButton>
 
-                <MudTextField Label=" Topping " HelperText="Enter topping Name" Class="mt-3"
-                @bind-Value="_topping" InputType="InputType.Text" />
+        </MudTd>
+    </RowTemplate>
 
-
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Order</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-
-</MudGrid>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 
 
 @code {
 
-    string _phone;
-    string _coffee;
-    string _topping;
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
 
-    private void OnOrder()
-    {
-        // Qualify the static method with the type name (Order)
-        var orders = OrderService.Create(_coffee, _topping, int.Parse(_phone));
-    }
+
+    private bool _displayModal { get; set; } = false;
+
+
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
     
-   
+
+    private IEnumerable<CoffeeAddIn> Elements { get; set; } = new List<CoffeeAddIn>();
+
+    protected override void OnInitialized()
+    {
+        Elements = AddIn.GetAllAddIns();
+    }
+
+    private void AddItemInCart(Guid addInItemID, double itemPrice, string name)
+    {
+        //calls the addItem in orderItemList
+        OrderItem.AddItem(_globalState.OrderContent, addInItemID, "Add-Ins", itemPrice, name);
+    }
+
+    public void logout()
+    {
+        _globalState.CurrentUser = null;
+        NavigationManager.NavigateTo("/login");
+    }
+
 }

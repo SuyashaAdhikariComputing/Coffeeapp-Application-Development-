@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 namespace Coffeeapp.Data.Models
 {
 
-    public class OrderModel 
+    public class Coffee
     {
-        public string Coffee { get; set; }
-        public string Topping { get; set; }
-
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string CoffeeName { get; set; }
+        public double Price { get; set; }
     }
 }
 
