@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -62,6 +63,30 @@ namespace Coffeeapp.Data.Services
             {
                 SaveAddInData(_CoffeeAddIn);
             }
+        }
+
+        public CoffeeAddIn GetAddInItemByID(String addInItemID)
+        {
+            List<CoffeeAddIn> AddIns = GetAllAddIns();
+            CoffeeAddIn addInItem = AddIns.FirstOrDefault(addIn => addIn.Id.ToString() == addInItemID);
+            return addInItem;
+        }
+
+        public void UpdateAddIn(CoffeeAddIn coffeeAddIn)
+        {
+            List<CoffeeAddIn> addInItemsList = GetAllAddIns();
+
+            CoffeeAddIn addInItemToUpdate = addInItemsList.FirstOrDefault(_addInItem => _addInItem.Id.ToString() == coffeeAddIn.Id.ToString());
+
+            if (addInItemToUpdate == null)
+            {
+                throw new Exception("Add-In item not found");
+            }
+
+            addInItemToUpdate.Name = coffeeAddIn.Name;
+            addInItemToUpdate.Price = coffeeAddIn.Price;
+
+            SaveAddInData(addInItemsList);
         }
     }
 }

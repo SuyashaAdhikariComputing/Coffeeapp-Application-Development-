@@ -1,0 +1,72 @@
+﻿@page "/AddinPage"
+
+
+@inject AddIn AddIn
+@inject OrderItem OrderItem
+@inject NavigationManager NavigationManager
+
+<MudTable Items="@Elements"
+          Dense="@dense"
+          Hover="@hover"
+          Bordered="@bordered"
+          Striped="@striped">
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Coffee List</MudText>
+        <MudSpacer />
+    </ToolBarContent>
+
+
+    <HeaderContent>
+        <MudTh>Coffee Type</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Action</MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="CoffeeType">@context.Name</MudTd>
+        <MudTd DataLabel="Price">Rs.@context.Price</MudTd>
+        <MudTd DataLabel="Action">
+           
+            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" aria-label="Edit" OnClick="@(()  => NavigationManager.NavigateTo($"/AddinEdit/{context.Id}"))"> </MudIconButton>
+            
+            <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Add" OnClick="@(() => AddItemInCart(context.Id, context.Price, context.Name))" aria-label="Add"></MudIconButton>
+
+        </MudTd>
+    </RowTemplate>
+
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+
+
+    private bool _displayModal { get; set; } = false;
+
+
+    private bool dense = true;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = true;
+    private string _searchString1 = "";
+
+    private IEnumerable<CoffeeAddIn> Elements { get; set; } = new List<CoffeeAddIn>();
+
+    protected override void OnInitialized()
+    {
+        Elements = AddIn.GetAllAddIns();
+        //AddIn.SeedAddInItems(); //Run this code while running for the first time
+
+    }
+    
+    private void AddItemInCart(Guid addInItemID, double itemPrice, string name)
+    {
+        //calls the addItem in orderItemList
+        OrderItem.AddItem(_globalState.OrderContent, addInItemID, "Add-Ins", itemPrice, name);
+    }
+
+}
