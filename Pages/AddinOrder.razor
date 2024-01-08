@@ -1,4 +1,4 @@
-﻿@page "/AddinPage"
+﻿@page "/AddinOrder"
 
 
 @inject AddIn AddIn
@@ -27,9 +27,7 @@
         <MudTd DataLabel="CoffeeType">@context.Name</MudTd>
         <MudTd DataLabel="Price">Rs.@context.Price</MudTd>
         <MudTd DataLabel="Action">
-           
-            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" aria-label="Edit" OnClick="@(()  => NavigationManager.NavigateTo($"/AddinEdit/{context.Id}"))"> </MudIconButton>
-            
+
             <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Add" OnClick="@(() => AddItemInCart(context.Id, context.Price, context.Name))" aria-label="Add"></MudIconButton>
 
         </MudTd>
@@ -62,7 +60,7 @@
         //AddIn.SeedAddInItems(); //Run this code while running for the first time
 
     }
-    
+
     private void AddItemInCart(Guid addInItemID, double itemPrice, string name)
     {
         //calls the addItem in orderItemList
@@ -70,3 +68,4 @@
     }
 
 }
+
