@@ -1,9 +1,8 @@
 ﻿@page "/Staff"
 @using Coffeeapp.Data.Models
 @inject NavigationManager NavigationManager
-
-<h3>Staff</h3>
-
+<h3>Admin</h3>
+<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="Onlogout">Logout</MudButton>
 
 
 @code {
@@ -13,10 +12,12 @@
 
 
 
-    public void logout()
+
+    public void Onlogout()
     {
         _globalState.CurrentUser = null;
         NavigationManager.NavigateTo("/login");
     }
 
 }
+

@@ -1,10 +1,36 @@
-﻿@using Coffeeapp.Data.Models
-<MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-    <MudNavLink Href="/AddinPage" Match="NavLinkMatch.Prefix">AddinPage</MudNavLink>
-    <MudNavLink Href="/Order" Match="NavLinkMatch.Prefix">Order</MudNavLink>
-    <MudNavLink Href="/Cart" Match="NavLinkMatch.Prefix">Cart</MudNavLink>
-   
-    <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
-</MudNavMenu>
+﻿@inject NavigationManager NavigationManager
 
+@using Coffeeapp.Data.Models
+
+
+@if (_globalState.CurrentUser != null)
+{
+    @if (_globalState.CurrentUser.Role != Role.Admin)
+    {
+        <MudNavMenu>
+            <MudNavLink Href="/Staff" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+            <MudNavLink Href="/CoffeeOrder" Match="NavLinkMatch.Prefix">OrderPage</MudNavLink>
+            <MudNavLink Href="/AddinOrder" Match="NavLinkMatch.Prefix">AddinOrder</MudNavLink>
+            <MudNavLink Href="/Cart" Match="NavLinkMatch.Prefix">Cart</MudNavLink>
+        </MudNavMenu>
+    }
+
+    @if (_globalState.CurrentUser.Role != Role.Staff)
+    {
+        <MudNavMenu>
+            <MudNavLink Href="/Admin" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+            <MudNavLink Href="/CoffeeEdit" Match="NavLinkMatch.Prefix">OrderPage</MudNavLink>
+            <MudNavLink Href="/AddinEdit" Match="NavLinkMatch.Prefix">AddinOrder</MudNavLink>
+            <MudNavLink Href="/Cart" Match="NavLinkMatch.Prefix">Cart</MudNavLink>
+        </MudNavMenu>
+    }
+}
+
+
+@code {
+
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+    
+
+}

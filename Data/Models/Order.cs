@@ -10,9 +10,7 @@ namespace Coffeeapp.Data.Models
     {
         public Guid OrderID { get; set; } = Guid.NewGuid();
         public Guid CustomerID { get; set; }
-        public DateTime OrderDate { get; set; }
-        public String EmployeeName { get; set; }
-        public DateTime OrderTime { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.Now;
         public Customer Customer { get; set; }
 
     }

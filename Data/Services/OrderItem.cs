@@ -37,7 +37,7 @@ namespace Coffeeapp.Data.Services
 
         }
 
-        public void DeleteItemInOrderContentList(List<OrderContent> _orderContent, Guid orderContentID)
+        public void DeleteItemInList(List<OrderContent> _orderContent, Guid orderContentID)
         {
             OrderContent orderContent = _orderContent.FirstOrDefault(x => x.OrderContentID == orderContentID);
 
@@ -47,7 +47,7 @@ namespace Coffeeapp.Data.Services
             }
         }
 
-        public void QuantityOfItemList(List<OrderContent> _orderContent, Guid orderContentID, String action)
+        public void QuantityOfItem(List<OrderContent> _orderContent, Guid orderContentID, String action)
         {
             OrderContent orderContent = _orderContent.FirstOrDefault(x => x.OrderContentID == orderContentID);
 

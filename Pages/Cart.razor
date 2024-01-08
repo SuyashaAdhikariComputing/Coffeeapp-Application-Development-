@@ -1,0 +1,122 @@
+﻿@page "/Cart"
+@using System.Diagnostics;
+@inject CoffeeConfig CoffeeConfig
+@inject OrderItem OrderItem
+@inject AddIn AddIn
+
+
+<MudTable Items="@Elements"
+          Dense=true
+          Hover=true
+          Bordered=true
+          Striped=true>
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Cart</MudText>
+
+
+    </ToolBarContent>
+
+
+    <HeaderContent>
+        <MudTh>Item Name</MudTh>
+        <MudTh>Item Type</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Quantity</MudTh>
+        <MudTh>Total</MudTh>
+        <MudTh>Action</MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Item Name">@context.Name</MudTd>
+        <MudTd DataLabel="Item Type">@context.ItemType</MudTd>
+        <MudTd DataLabel="Price">Rs.@context.Price</MudTd>
+
+        <MudTd DataLabel="Quantity">
+
+            <MudIconButton Icon="@Icons.Material.Filled.Remove" aria-label="subtract" OnClick="@(() => QuantityUpdate(context.OrderContentID , "sub"))"></MudIconButton>
+
+            <span>
+                @context.Quantity
+            </span>
+
+            <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => QuantityUpdate(context.OrderContentID , "add"))"></MudIconButton>
+
+
+        </MudTd>
+
+        <MudTd DataLabel="Price">Rs.@context.TotalPrice</MudTd>
+        <MudTd DataLabel="Action">
+            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => handleDeleteCartItem(context.OrderContentID))"></MudIconButton>
+        </MudTd>
+    </RowTemplate>
+
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+<MudSpacer />
+<MudText Typo="Typo.subtitle1">Total Price: <b>Rs.@_totalPrice</b></MudText>
+
+<div class="mt-5">
+    <MudButton Variant="Variant.Filled" OnClick="clearCart">Clear Cart</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary">Checkout</MudButton>
+</div>
+
+@code {
+    [CascadingParameter]
+
+    private double _totalPrice { set; get; } = 0;
+
+    private GlobalState _globalState { set; get; }
+
+    private Coffee _fetchcoffee { set; get; }
+
+    private IEnumerable<OrderContent> Elements = new List<OrderContent>();
+
+    protected override void OnInitialized()
+    {
+        Elements = _globalState.OrderContent;
+
+        _totalPrice = calculateTotalPrice();
+    }
+
+
+    //calculate the total amount of the cart
+    private double calculateTotalPrice()
+    {
+        double totalPrice = 0;
+        //calculate the total amount from the list OrderList data.
+        foreach (var item in Elements)
+        {
+            totalPrice += item.TotalPrice;
+        }
+        return totalPrice;
+    }
+
+
+    //remove the existing data
+    private void clearCart()
+    {
+        _globalState.OrderContent.Clear();
+        _totalPrice = calculateTotalPrice();
+    }
+
+    private void handleDeleteCartItem(Guid orderContentID)
+    {
+        OrderItem.DeleteItemInList(_globalState.OrderContent, orderContentID);
+        _totalPrice = calculateTotalPrice();
+    }
+
+
+    //Code to update the quantity of the item using add or subtract
+    private void QuantityUpdate(Guid orderContentID, string action)
+    {
+        OrderItem.QuantityOfItem(_globalState.OrderContent, orderContentID, action);
+        _totalPrice = calculateTotalPrice();
+    }
+
+    
+
+
+}

@@ -50,14 +50,14 @@
     private bool hover = true;
     private bool striped = true;
     private bool bordered = true;
-    private string _searchString1 = "";
+    
 
     private IEnumerable<CoffeeAddIn> Elements { get; set; } = new List<CoffeeAddIn>();
 
     protected override void OnInitialized()
     {
         Elements = AddIn.GetAllAddIns();
-        //AddIn.SeedAddInItems(); //Run this code while running for the first time
+        
 
     }
 

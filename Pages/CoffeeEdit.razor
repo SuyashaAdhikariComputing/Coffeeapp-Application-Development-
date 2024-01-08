@@ -43,13 +43,14 @@
     [CascadingParameter]
     private GlobalState _globalState { get; set; }
 
-    
+
 
     private IEnumerable<Coffee> Elements { get; set; } = new List<Coffee>();
 
     protected override void OnInitialized()
     {
         Elements = CoffeeConfig.GetAllCoffeeFromJsonFile();
+       // CoffeeConfig.SeedCofeeDetails();//Run this for first time
     }
     //takes the id of the coffee and price of the coffee
     private void AddItemInCart(Guid addInItemID, double itemPrice, string name)

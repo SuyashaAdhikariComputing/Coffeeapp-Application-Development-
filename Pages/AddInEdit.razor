@@ -28,9 +28,9 @@
         <MudTd DataLabel="Price">Rs.@context.Price</MudTd>
         <MudTd DataLabel="Action">
            
-            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" aria-label="Edit" OnClick="@(()  => NavigationManager.NavigateTo($"/AddinEdit/{context.Id}"))"> </MudIconButton>
-            
             <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Add" OnClick="@(() => AddItemInCart(context.Id, context.Price, context.Name))" aria-label="Add"></MudIconButton>
+
+            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" aria-label="Edit" OnClick="@(()  => NavigationManager.NavigateTo($"/AddinEdit/{context.Id}"))"> </MudIconButton>
 
         </MudTd>
     </RowTemplate>
@@ -52,7 +52,7 @@
     private bool hover = true;
     private bool striped = true;
     private bool bordered = true;
-    private string _searchString1 = "";
+    
 
     private IEnumerable<CoffeeAddIn> Elements { get; set; } = new List<CoffeeAddIn>();
 

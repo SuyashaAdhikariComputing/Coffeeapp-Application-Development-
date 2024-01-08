@@ -6,7 +6,7 @@
 {
     @if (_globalState.CurrentUser.Role != Role.Admin)
     {
-        NavigationManager.NavigateTo("/Order");
+        NavigationManager.NavigateTo("/Staff");
     }
 
     @if (_globalState.CurrentUser.Role != Role.Staff)
@@ -15,7 +15,7 @@
     }
 }
 
-<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="logout">Logout</MudButton>
+
 
 
 @code {
@@ -30,12 +30,6 @@
         }
 
         base.OnInitialized();
-    }
-
-    public void logout()
-    {
-        _globalState.CurrentUser = null;
-        NavigationManager.NavigateTo("/login");
     }
 
    
