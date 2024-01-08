@@ -15,14 +15,14 @@ namespace Coffeeapp.Data.Services
         {
             new() { Name = "Extra Sugar", Price = 10.0 },
             new() { Name = "Whipped Cream", Price = 15.0 },
-            new() { Name = "Chocolate Syrup", Price = 12.0 },
-            new() { Name = "Vanilla Extract", Price = 18.0 },
-            new() { Name = "Caramel Drizzle", Price = 22.0 },
+            new() { Name = "Chocolate Syrup", Price = 10.0 },
+            new() { Name = "Hazelnut Syrup", Price = 20.0 },
+            new() { Name = "Caramel", Price = 15.0 },
             new() { Name = "Hazelnut Flavor", Price = 20.0 },
-            new() { Name = "Cinnamon Powder", Price = 17.0 },
-            new() { Name = "Almond Milk", Price = 25.0 },
-            new() { Name = "Whiskey Shot", Price = 30.0 },
-            new() { Name = "Special Syrup Blend", Price = 28.0 }
+            new() { Name = "Choco chip", Price = 17.0 },
+            new() { Name = "Vanilla Extract", Price = 30.0 },
+            new() { Name = "Brown Sugar", Price = 50.0 },
+            new() { Name = "Nutmeg", Price = 60.0 },
         };
 
 

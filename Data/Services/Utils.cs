@@ -20,10 +20,12 @@ namespace Coffeeapp.Data.Services
             return Path.Combine(GetDirectoryPath(), "Listcoffee.json");
         }
 
-        public static string GetCustomerPath()
+        public static string GetCustomerPath(string phone)
         {
-            return Path.Combine(GetDirectoryPath(), "customer.json");
+            string fileName = $"customer_{phone}.json";
+            return Path.Combine(GetDirectoryPath(), fileName);
         }
+
         //getting the JSON Path for Adins
         public static string GetAddInListPath()
         {

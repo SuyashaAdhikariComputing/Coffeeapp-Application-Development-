@@ -1,9 +1,15 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Coffeeapp.Data.Models;
+using Microsoft.AspNetCore.Components;
+using static MudBlazor.CategoryTypes;
+
+
 
 namespace Coffeeapp.Data.Services
 {
@@ -29,7 +35,8 @@ namespace Coffeeapp.Data.Services
                 ItemType = ItemType,
                 Quantity = 1,
                 Price = Price,
-                TotalPrice = Price
+                TotalPrice = Price,
+                
             };
             //add the item in the list
             _orderContent.Add(ordercontent);
@@ -71,5 +78,64 @@ namespace Coffeeapp.Data.Services
                 }
             }
         }
+
+        public void SaveOrder(List<Order> CoffeeOrder)
+        {
+            string DirPath = Utils.GetDirectoryPath(); ;
+            string addInItemsFilePath = Utils.GetAddInListPath();
+
+            if (!Directory.Exists(DirPath))
+            {
+                Directory.CreateDirectory(DirPath);
+            }
+
+            var json = JsonSerializer.Serialize(CoffeeOrder);
+
+            File.WriteAllText(addInItemsFilePath, json);
+        }
+
+        public void SaveOrderToJson(string phone, double totalAmount)
+        {
+            try
+            {
+                string orderFilePath = Utils.GetCustomerPath(phone);
+
+                List<Order> existingOrders = new List<Order>();
+
+                // Read existing orders from the file, if any
+                
+
+                if (File.Exists(orderFilePath))
+                {
+                    string existingData = File.ReadAllText(orderFilePath);
+
+                    if (!string.IsNullOrWhiteSpace(existingData))
+                    {
+                        // Deserialize existing orders
+                        existingOrders = JsonSerializer.Deserialize<List<Order>>(existingData);
+                    }
+                }
+
+                // Add the new order
+                Order newOrder = new Order
+                {
+                    Phone = phone,
+                    OrderDate = DateTime.Now,
+                    TotalPrice = totalAmount.ToString()
+                };
+
+                existingOrders.Add(newOrder);
+
+                // Write the updated orders back to the file
+                var json = JsonSerializer.Serialize(existingOrders);
+                File.WriteAllText(orderFilePath, json);
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving order data to JSON: {ex.Message}");
+            }
+        }
     }
-}
+    }
+

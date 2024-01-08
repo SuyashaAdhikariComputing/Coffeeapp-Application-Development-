@@ -27,7 +27,7 @@
         <MudTd DataLabel="Price">Rs.@context.Price</MudTd>
         <MudTd DataLabel="Action">
 
-             <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" OnClick="@(()  => NavigationManager.NavigateTo($"/CoffeePriceEdit/{context.Id}"))" aria-label="Edit"> </MudIconButton>
+            <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" OnClick="@(()  => NavigationManager.NavigateTo($"/CoffeePriceEdit/{context.Id}"))" aria-label="Edit"> </MudIconButton>
             
             <MudIconButton Color="Color.Success" Icon="@Icons.Material.Filled.Add" OnClick="@(() => AddItemInCart(context.Id, context.Price,context.CoffeeName))" aria-label="Add"></MudIconButton>
 
@@ -50,7 +50,7 @@
     protected override void OnInitialized()
     {
         Elements = CoffeeConfig.GetAllCoffeeFromJsonFile();
-       // CoffeeConfig.SeedCofeeDetails();//Run this for first time
+        CoffeeConfig.SeedCofeeDetails();//Run this for first time
     }
     //takes the id of the coffee and price of the coffee
     private void AddItemInCart(Guid addInItemID, double itemPrice, string name)

@@ -13,17 +13,17 @@ namespace Coffeeapp.Data.Services
     {
         private readonly List<Coffee> _Listofcoffee = new()
         {
-            new() { CoffeeName = "Cappuccino", Price = 150.0 },
-            new() { CoffeeName = "Latte", Price = 170.0 },
+            new() { CoffeeName = "Flat White", Price = 190.0 },
+            new() { CoffeeName = "Latte", Price = 120.0 },
             new() { CoffeeName = "Espresso", Price = 120.0 },
             new() { CoffeeName = "Americano", Price = 140.0 },
-            new() { CoffeeName = "Mocha", Price = 180.0 },
-            new() { CoffeeName = "Macchiato", Price = 160.0 },
-            new() { CoffeeName = "Flat White", Price = 160.0 },
-            new() { CoffeeName = "Affogato", Price = 200.0 },
-            new() { CoffeeName = "Irish Coffee", Price = 190.0 },
-            new() { CoffeeName = "Turkish Coffee", Price = 130.0 },
-            new() { CoffeeName = "Ristretto", Price = 110.0 }
+            new() { CoffeeName = "Ice Americano", Price = 180.0 },
+            new() { CoffeeName = "Caramel Macchiato", Price = 200.0 },
+            new() { CoffeeName = "Mocha", Price = 160.0 },
+            new() { CoffeeName = "Drip Coffee", Price = 200.0 },
+            new() { CoffeeName = "Frappuccino", Price = 220.0 },
+            new() { CoffeeName = "Black Coffee", Price = 110.0 },
+            new() { CoffeeName = "Decaf", Price = 240.0 }
         };
 
         public void SaveListofcoffeeInJsonFile(List<Coffee> coffeeList)
@@ -72,7 +72,7 @@ namespace Coffeeapp.Data.Services
             return coffee;
         }
 
-        public void UpdateCofeeDetails(Coffee coffee)
+        public void UpdateDetails(Coffee coffee)
         {
             List<Coffee> coffeeList = GetAllCoffeeFromJsonFile();
 
@@ -88,5 +88,7 @@ namespace Coffeeapp.Data.Services
 
             SaveListofcoffeeInJsonFile(coffeeList);
         }
+
+       
     }
 }

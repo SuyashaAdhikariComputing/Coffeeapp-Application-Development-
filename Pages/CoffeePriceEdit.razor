@@ -3,9 +3,9 @@
 @inject NavigationManager NavigationManager
 @inject CoffeeConfig CoffeeConfig
 
-<h1>Edit Add-Ins</h1>
+<h1>Edit CoffeePrice</h1>
 
-<MudButton OnClick="@(()  => NavigationManager.NavigateTo("/CoffeeEdit"))">Back</MudButton>
+@* <MudButton OnClick="@(()  => NavigationManager.NavigateTo("/coffeelist"))">Back</MudButton> *@
 
 @if (!_isSuccess && _message != "")
 {
@@ -26,8 +26,10 @@ else if (_isSuccess && _message != "")
                 <MudTextField @bind-Value="_coffeeItem.Price" Label="Price" Variant="Variant.Outlined"></MudTextField>
                 <div>
                     <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="updateCoffeeItem">
-                        Update Coffee Item
+                        Update
                     </MudButton>
+
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(()  => NavigationManager.NavigateTo("/CoffeeEdit"))">Back</MudButton>
                 </div>
             </div>
         </div>
@@ -58,28 +60,28 @@ else if (_isSuccess && _message != "")
         {
             if (String.IsNullOrEmpty(_password))
             {
-                _message = "Please Enter Password";
+                _message = "Password field is Empty";
                 return;
             }
             if (String.IsNullOrEmpty(_coffeeItem.CoffeeName))
             {
-                _message = "Please Enter Name";
+                _message = "Enter Coffee Name";
                 return;
             }
             if (_coffeeItem.Price <= 0)
             {
-                _message = "Please Enter Valid Price";
+                _message = " Enter Price that is valid";
                 return;
             }
             if (_password != _globalState.CurrentUser.Password)
             {
-                _message = "Please Provide Correct password";
+                _message = "Enter Correct password";
                 return;
             }
-            CoffeeConfig.UpdateCofeeDetails(_coffeeItem);
-            _message = "Successfully Updated!";
+            CoffeeConfig.UpdateDetails(_coffeeItem);
+            _message = "Price Updated!";
             _isSuccess = true;
-            NavigationManager.NavigateTo("/coffeelist");
+            NavigationManager.NavigateTo("/CoffeeEdit");
         }
         catch (Exception e)
         {
@@ -87,4 +89,3 @@ else if (_isSuccess && _message != "")
         }
     }
 }
-

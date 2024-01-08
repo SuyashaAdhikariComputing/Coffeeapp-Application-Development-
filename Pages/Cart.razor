@@ -3,7 +3,16 @@
 @inject CoffeeConfig CoffeeConfig
 @inject OrderItem OrderItem
 @inject AddIn AddIn
+@inject NavigationManager NavigationManager
 
+
+
+
+<MudPaper Class="pa-4">
+    <MudForm>
+        <MudTextField @bind-Value="_phone"  Immediate="true" Label="Phone" />
+    </MudForm>
+</MudPaper>
 
 <MudTable Items="@Elements"
           Dense=true
@@ -34,18 +43,18 @@
 
         <MudTd DataLabel="Quantity">
 
-            <MudIconButton Icon="@Icons.Material.Filled.Remove" aria-label="subtract" OnClick="@(() => QuantityUpdate(context.OrderContentID , "sub"))"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Filled.Remove" aria-label="subtract" OnClick="@(() => QuantityUpdate(context.OrderContentID, "sub"))"></MudIconButton>
 
             <span>
                 @context.Quantity
             </span>
 
-            <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => QuantityUpdate(context.OrderContentID , "add"))"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="add" OnClick="@(() => QuantityUpdate(context.OrderContentID, "add"))"></MudIconButton>
 
 
         </MudTd>
 
-        <MudTd DataLabel="Price">Rs.@context.TotalPrice</MudTd>
+        <MudTd DataLabel="TotalPrice">Rs.@context.TotalPrice</MudTd>
         <MudTd DataLabel="Action">
             <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => handleDeleteCartItem(context.OrderContentID))"></MudIconButton>
         </MudTd>
@@ -56,67 +65,89 @@
     </PagerContent>
 </MudTable>
 <MudSpacer />
-<MudText Typo="Typo.subtitle1">Total Price: <b>Rs.@_totalPrice</b></MudText>
+<MudText Typo="Typo.subtitle1">Total Price: <b>Rs.@_totalAmount</b></MudText>
 
 <div class="mt-5">
-    <MudButton Variant="Variant.Filled" OnClick="clearCart">Clear Cart</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary">Checkout</MudButton>
+    <MudButton Variant="Variant.Filled" OnClick="clearAllCartData">Clear</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick=" OnCheckout">Place Order</MudButton>
 </div>
 
+@if (!string.IsNullOrWhiteSpace(NavigationManager.Uri)
+   && NavigationManager.Uri.Contains("?successMessage"))
+{
+    <div class="alert alert-success mt-3">
+        @Uri.EscapeDataString(NavigationManager.Uri.Split(new[] { "?successMessage=" }, StringSplitOptions.None)[1])
+    </div>
+}
+
 @code {
+
+    string _phone;
+
     [CascadingParameter]
 
-    private double _totalPrice { set; get; } = 0;
+
 
     private GlobalState _globalState { set; get; }
 
-    private Coffee _fetchcoffee { set; get; }
+
+    private double _totalAmount { set; get; } = 0;
+
+    public List<Order> Order { get; set; }
+
 
     private IEnumerable<OrderContent> Elements = new List<OrderContent>();
+
+    private Coffee _coffee { set; get; }
+    //calculate the total amount of the cart
+    private double calculateTotalPrice()
+    {
+        double totalAmount = 0;
+        //calculate the total amount from the list OrderList data.
+        foreach (var x in Elements)
+        {
+            totalAmount += x.TotalPrice;
+        }
+        return totalAmount;
+    }
+    //remove the existing data
+    private void clearAllCartData()
+    {
+        _globalState.OrderContent.Clear();
+        _totalAmount = calculateTotalPrice();
+    }
+
+    private void handleDeleteCartItem(Guid orderItemID)
+    {
+        OrderItem.DeleteItemInList(_globalState.OrderContent, orderItemID);
+        _totalAmount = calculateTotalPrice();
+    }
+    //Code to update the quantity of the item using add or subtract
+    private void QuantityUpdate(Guid orderItemID, string action)
+    {
+        OrderItem.QuantityOfItem(_globalState.OrderContent, orderItemID, action);
+        _totalAmount = calculateTotalPrice();
+    }
 
     protected override void OnInitialized()
     {
         Elements = _globalState.OrderContent;
 
-        _totalPrice = calculateTotalPrice();
+        _totalAmount = calculateTotalPrice();
     }
 
-
-    //calculate the total amount of the cart
-    private double calculateTotalPrice()
+    private void OnCheckout()
     {
-        double totalPrice = 0;
-        //calculate the total amount from the list OrderList data.
-        foreach (var item in Elements)
+        if (!string.IsNullOrWhiteSpace(_phone))
         {
-            totalPrice += item.TotalPrice;
+            // Call a method to save the order details to a JSON file
+            OrderItem.SaveOrderToJson(_phone, _totalAmount);
+            string url = "/Cart?successMessage=Order placed successfully!";
+            NavigationManager.NavigateTo(url);
         }
-        return totalPrice;
+
     }
-
-
-    //remove the existing data
-    private void clearCart()
-    {
-        _globalState.OrderContent.Clear();
-        _totalPrice = calculateTotalPrice();
-    }
-
-    private void handleDeleteCartItem(Guid orderContentID)
-    {
-        OrderItem.DeleteItemInList(_globalState.OrderContent, orderContentID);
-        _totalPrice = calculateTotalPrice();
-    }
-
-
-    //Code to update the quantity of the item using add or subtract
-    private void QuantityUpdate(Guid orderContentID, string action)
-    {
-        OrderItem.QuantityOfItem(_globalState.OrderContent, orderContentID, action);
-        _totalPrice = calculateTotalPrice();
-    }
-
-    
-
+        
+  
 
 }
