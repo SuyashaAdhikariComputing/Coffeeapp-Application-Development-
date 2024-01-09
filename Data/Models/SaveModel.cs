@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace Coffeeapp.Data.Models
 {
-    public class Order
+
+    public class SaveModel
     {
-        
-      
-        public DateTime OrderDate { get; set; } 
-
-        //public string TotalPrice { get; set; }
-
         public List<OrderContent> OrderContents { get; set; }
     }
 }

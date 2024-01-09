@@ -136,18 +136,33 @@
         _totalAmount = calculateTotalPrice();
     }
 
+    // private void OnCheckout()
+    // {
+    //     if (!string.IsNullOrWhiteSpace(_phone))
+    //     {
+    //         // Call a method to save the order details to a JSON file
+    //         OrderItem.SaveOrderToJson(_phone, _totalAmount,);
+    //         string url = "/Cart?successMessage=Order placed successfully!";
+    //         NavigationManager.NavigateTo(url);
+    //     }
+
+    // }
+
+
     private void OnCheckout()
     {
         if (!string.IsNullOrWhiteSpace(_phone))
         {
+            List<OrderContent> orderContentsList = Elements.ToList();
             // Call a method to save the order details to a JSON file
-            OrderItem.SaveOrderToJson(_phone, _totalAmount);
+            OrderItem.SaveOrderToCustomerJson(_phone, orderContentsList);
+            OrderItem.SavenewOrder(orderContentsList);
             string url = "/Cart?successMessage=Order placed successfully!";
             NavigationManager.NavigateTo(url);
         }
 
     }
         
-  
+   
 
 }

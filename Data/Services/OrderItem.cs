@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Coffeeapp.Data.Models;
 using Microsoft.AspNetCore.Components;
+using static Microsoft.Maui.ApplicationModel.Permissions;
 using static MudBlazor.CategoryTypes;
 
 
@@ -94,7 +95,43 @@ namespace Coffeeapp.Data.Services
             File.WriteAllText(addInItemsFilePath, json);
         }
 
-        public void SaveOrderToJson(string phone, double totalAmount)
+       public void SavenewOrder(List<OrderContent> orderContents)
+        {
+            try
+            {
+                string orderFilePath = Utils.GetOrderPath();
+                List<SaveModel> existingOrders = new List<SaveModel>();
+
+                if (File.Exists(orderFilePath))
+                {
+                    string existingData = File.ReadAllText(orderFilePath);
+
+                    if (!string.IsNullOrWhiteSpace(existingData))
+                    {
+                        // Deserialize existing orders
+                        existingOrders = JsonSerializer.Deserialize<List<SaveModel>>(existingData);
+                    }
+                }
+
+                SaveModel newOrder = new SaveModel
+                {
+                  
+                    OrderContents = orderContents
+                };
+
+                existingOrders.Add(newOrder);
+
+                // Write the updated orders back to the file
+                var json = JsonSerializer.Serialize(existingOrders);
+                File.WriteAllText(orderFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving order data to JSON: {ex.Message}");
+            }
+        }
+
+        public void SaveOrderToCustomerJson(string phone, List<OrderContent> orderContents)
         {
             try
             {
@@ -103,8 +140,6 @@ namespace Coffeeapp.Data.Services
                 List<Order> existingOrders = new List<Order>();
 
                 // Read existing orders from the file, if any
-                
-
                 if (File.Exists(orderFilePath))
                 {
                     string existingData = File.ReadAllText(orderFilePath);
@@ -116,26 +151,26 @@ namespace Coffeeapp.Data.Services
                     }
                 }
 
-                // Add the new order
+                // Create a new order
                 Order newOrder = new Order
                 {
-                    Phone = phone,
-                    OrderDate = DateTime.Now,
-                    TotalPrice = totalAmount.ToString()
+                    OrderDate= DateTime.Now,
+                    OrderContents = orderContents
                 };
 
+                // Add the new order
                 existingOrders.Add(newOrder);
 
                 // Write the updated orders back to the file
                 var json = JsonSerializer.Serialize(existingOrders);
                 File.WriteAllText(orderFilePath, json);
-                
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving order data to JSON: {ex.Message}");
             }
         }
+
     }
     }
 
