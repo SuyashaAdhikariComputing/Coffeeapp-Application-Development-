@@ -1,6 +1,6 @@
 ﻿@page "/AddinEdit"
 
-
+@inject IJSRuntime JSRuntime
 @inject AddIn AddIn
 @inject OrderItem OrderItem
 @inject NavigationManager NavigationManager
@@ -40,6 +40,8 @@
     </PagerContent>
 </MudTable>
 
+
+
 @code {
     [CascadingParameter]
     private GlobalState _globalState { get; set; }
@@ -67,6 +69,7 @@
     {
         //calls the addItem in orderItemList
         OrderItem.AddItem(_globalState.OrderContent, addInItemID, "Add-Ins", itemPrice, name);
+        JSRuntime.InvokeVoidAsync("alert", "Order placed successfully!");
     }
 
 }

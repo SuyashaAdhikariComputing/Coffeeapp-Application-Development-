@@ -5,7 +5,7 @@
 
 @using System.Diagnostics;
 
-<MudGrid>
+ @* <MudGrid>
     <MudItem xs="12" sm="7">
         <MudCard>
             <MudCardContent>
@@ -24,7 +24,83 @@
         </MudCard>
     </MudItem>
 
+</MudGrid>  *@
+
+<MudGrid Class="custom-grid">
+    <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
+        <MudCard Class="custom-card">
+            <MudCardContent Class="custom-card-content">
+                <MudIcon Icon="@Icons.Material.Filled.LocalCafe" class="coffee-icon" />
+
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <h4 style="color:red">@_errorMessage</h4>
+                }
+
+                <MudTextField Label="Password" HelperText="Enter a valid password" Class="mt-3"
+                @bind-Value="_password" InputType="InputType.Password" />
+            </MudCardContent>
+            <MudCardActions Class="custom-card-actions">
+                <div class="center-button">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" OnClick=" OnLogin" Class="button-white">
+                        <MudIcon Icon="@Icons.Material.Filled.Lock" class="button-icon" />
+                        Login
+                    </MudButton>
+                </div>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
 </MudGrid>
+
+<style>
+    .custom-grid {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .custom-card {
+       
+        border: 1px solid ;
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        width: 50%; /* Adjust the width as needed */
+        height: 52vh; /* Adjust the height as needed */
+        position: absolute;
+        top: 20%;
+        left: 30%;
+        transform: translate(-20%, -20%);
+    }
+
+    .custom-card-content {
+        text-align: center;
+    }
+
+   
+    .custom-card-actions {
+        text-align: center;
+    }
+
+    .coffee-icon {
+        font-size: 48px;
+        color: #8B4513;
+    }
+
+    .button-icon {
+        margin-right: 8px;
+    }
+
+    .center-button{
+        margin-top: 3%;
+        margin-left: 40%;
+    }
+</style>
+
+
+
+
 
 
 @code {

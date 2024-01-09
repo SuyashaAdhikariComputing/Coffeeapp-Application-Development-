@@ -1,0 +1,43 @@
+﻿@page "/ViewOrder"
+@using Coffeeapp.Data.Models
+@inject OrderItem OrderItem
+
+  <MudTable Items="@orders" Class="mud-table-root">
+    <HeaderContent>
+        
+        <MudTh>Name</MudTh>
+        <MudTh>Item Type</MudTh>
+        <MudTh>Quantity</MudTh>
+        <MudTh>Total Price</MudTh>
+    </HeaderContent>
+    <RowTemplate Context="order">
+        @foreach (var orderContent in order.OrderContents)
+        {
+            <MudTr>
+                
+                <MudTd>@orderContent.Name</MudTd>
+                <MudTd>@orderContent.ItemType</MudTd>
+                <MudTd>@orderContent.Quantity</MudTd>
+                <MudTd>@orderContent.TotalPrice</MudTd>
+            </MudTr>
+        }
+    </RowTemplate>
+</MudTable>  
+
+
+
+  
+
+@code {
+
+  
+
+    private List<SaveModel> orders;
+
+    protected override void OnInitialized()
+    {
+        orders = OrderItem.GetOrders();
+    }
+
+   
+}

@@ -1,4 +1,4 @@
-﻿@inject NavigationManager NavigationManager
+﻿@* @inject NavigationManager NavigationManager
 
 @using Coffeeapp.Data.Models
 
@@ -9,9 +9,10 @@
     {
         <MudNavMenu>
             <MudNavLink Href="/Staff" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-            <MudNavLink Href="/CoffeeOrder" Match="NavLinkMatch.Prefix">OrderPage</MudNavLink>
+            <MudNavLink Href="/CoffeeOrder" Match="NavLinkMatch.Prefix">CoffeeOrder</MudNavLink>
             <MudNavLink Href="/AddinOrder" Match="NavLinkMatch.Prefix">AddinOrder</MudNavLink>
             <MudNavLink Href="/Cart" Match="NavLinkMatch.Prefix">Cart</MudNavLink>
+            <MudNavLink Href="/ViewOrder" Match="NavLinkMatch.Prefix">ViewOrder</MudNavLink>
         </MudNavMenu>
     }
 
@@ -19,13 +20,83 @@
     {
         <MudNavMenu>
             <MudNavLink Href="/Admin" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-            <MudNavLink Href="/CoffeeEdit" Match="NavLinkMatch.Prefix">OrderPage</MudNavLink>
+            <MudNavLink Href="/CoffeeEdit" Match="NavLinkMatch.Prefix">CoffeeOrder</MudNavLink>
             <MudNavLink Href="/AddinEdit" Match="NavLinkMatch.Prefix">AddinOrder</MudNavLink>
             <MudNavLink Href="/Cart" Match="NavLinkMatch.Prefix">Cart</MudNavLink>
+            <MudNavLink Href="/ViewOrder" Match="NavLinkMatch.Prefix">ViewOrder</MudNavLink>
         </MudNavMenu>
     }
+} *@
+
+@inject NavigationManager NavigationManager
+@using Coffeeapp.Data.Models
+
+@if (_globalState.CurrentUser != null)
+{
+    <div class="nav-menu">
+        @if (_globalState.CurrentUser.Role != Role.Admin)
+        {
+            <MudNavMenu>
+                <MudNavLink Href="/Staff" Match="NavLinkMatch.All">
+                    <MudIcon Icon="@Icons.Material.Filled.Dashboard" class="nav-icon" />
+                    Dashboard
+                </MudNavLink>
+                <MudNavLink Href="/CoffeeOrder" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.LocalCafe" class="nav-icon" />
+                    Coffee Order
+                </MudNavLink>
+                <MudNavLink Href="/AddinOrder" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.AddShoppingCart" class="nav-icon" />
+                    Addin Order
+                </MudNavLink>
+                <MudNavLink Href="/Cart" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" class="nav-icon" />
+                    Cart
+                </MudNavLink>
+                <MudNavLink Href="/ViewOrder" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.ListAlt" class="nav-icon" />
+                    View Order
+                </MudNavLink>
+            </MudNavMenu>
+        }
+
+        @if (_globalState.CurrentUser.Role != Role.Staff)
+        {
+            <MudNavMenu>
+                <MudNavLink Href="/Admin" Match="NavLinkMatch.All">
+                    <MudIcon Icon="@Icons.Material.Filled.Dashboard" class="nav-icon" />
+                    Dashboard
+                </MudNavLink>
+                <MudNavLink Href="/CoffeeEdit" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" class="nav-icon" />
+                    Coffee Edit
+                </MudNavLink>
+                <MudNavLink Href="/AddinEdit" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" class="nav-icon" />
+                    Addin Edit
+                </MudNavLink>
+                <MudNavLink Href="/Cart" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" class="nav-icon" />
+                    Cart
+                </MudNavLink>
+                <MudNavLink Href="/ViewOrder" Match="NavLinkMatch.Prefix">
+                    <MudIcon Icon="@Icons.Material.Filled.ListAlt" class="nav-icon" />
+                    View Order
+                </MudNavLink>
+            </MudNavMenu>
+        }
+    </div>
 }
 
+<style>
+    .nav-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+   
+</style>
 
 @code {
 

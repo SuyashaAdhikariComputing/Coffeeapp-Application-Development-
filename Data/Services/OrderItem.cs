@@ -171,6 +171,17 @@ namespace Coffeeapp.Data.Services
             }
         }
 
+        public List<SaveModel> GetOrders()
+        {
+            string orderFilePath = Utils.GetOrderPath();
+            if (File.Exists(orderFilePath))
+            {
+                string jsonData = File.ReadAllText(orderFilePath);
+                return JsonSerializer.Deserialize<List<SaveModel>>(jsonData) ?? new List<SaveModel>();
+            }
+            return new List<SaveModel>();
+        }
+
     }
     }
 

@@ -72,13 +72,7 @@
     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick=" OnCheckout">Place Order</MudButton>
 </div>
 
-@if (!string.IsNullOrWhiteSpace(NavigationManager.Uri)
-   && NavigationManager.Uri.Contains("?successMessage"))
-{
-    <div class="alert alert-success mt-3">
-        @Uri.EscapeDataString(NavigationManager.Uri.Split(new[] { "?successMessage=" }, StringSplitOptions.None)[1])
-    </div>
-}
+
 
 @code {
 
@@ -154,11 +148,11 @@
         if (!string.IsNullOrWhiteSpace(_phone))
         {
             List<OrderContent> orderContentsList = Elements.ToList();
-            // Call a method to save the order details to a JSON file
+            
             OrderItem.SaveOrderToCustomerJson(_phone, orderContentsList);
             OrderItem.SavenewOrder(orderContentsList);
-            string url = "/Cart?successMessage=Order placed successfully!";
-            NavigationManager.NavigateTo(url);
+            
+            NavigationManager.NavigateTo("/ViewOrder");
         }
 
     }
