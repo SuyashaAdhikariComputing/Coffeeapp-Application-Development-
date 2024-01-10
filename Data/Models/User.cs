@@ -7,6 +7,8 @@ using Coffeeapp.Data.Enums;
 
 namespace Coffeeapp.Data.Models
 {
+
+    //this is the model for User and its attributes are Password and Role
     public class User
     {
        

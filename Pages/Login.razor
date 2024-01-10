@@ -114,13 +114,13 @@
     {
         try
         {
-            if (String.IsNullOrEmpty(_password))
+            if (String.IsNullOrEmpty(_password))//if password is empty
             {
                 _errorMessage = "Please Provide Password";
                 return;
             }
             _globalState.CurrentUser = LoginService.CheckUser(_password);
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/");//goes to index after login is accepted
 
 
         }

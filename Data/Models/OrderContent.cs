@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Coffeeapp.Data.Models
 {
-
+    // this is the model for OrderContent and its attributes are OrderContentID, ItemID, Name
+    // ItemType, Quantity, Price and TotalPrice
     public class OrderContent
     {
         public Guid OrderContentID { get; set; } = Guid.NewGuid();

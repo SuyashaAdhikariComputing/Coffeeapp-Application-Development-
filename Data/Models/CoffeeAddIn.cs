@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coffeeapp.Data.Models
 {
+    // this is the model for coffee AddIn and its attributes are Id, Name and Price
     public class CoffeeAddIn
     {
         public Guid Id { get; set; } = Guid.NewGuid();

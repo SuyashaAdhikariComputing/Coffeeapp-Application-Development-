@@ -1,43 +1,41 @@
-﻿@page "/ViewOrder"
+﻿
+@page "/ViewOrder"
 @using Coffeeapp.Data.Models
 @inject OrderItem OrderItem
 
-  <MudTable Items="@orders" Class="mud-table-root">
-    <HeaderContent>
-        
-        <MudTh>Name</MudTh>
-        <MudTh>Item Type</MudTh>
-        <MudTh>Quantity</MudTh>
-        <MudTh>Total Price</MudTh>
-    </HeaderContent>
-    <RowTemplate Context="order">
-        @foreach (var orderContent in order.OrderContents)
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Customer Phone</th>
+            <th>Item Name</th>
+            <th>Item Type</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in orders)
         {
-            <MudTr>
-                
-                <MudTd>@orderContent.Name</MudTd>
-                <MudTd>@orderContent.ItemType</MudTd>
-                <MudTd>@orderContent.Quantity</MudTd>
-                <MudTd>@orderContent.TotalPrice</MudTd>
-            </MudTr>
+            foreach (var orderContent in order.OrderContents)
+            {
+                <tr>
+                    <td>@order.Customerphone</td>
+                    <td>@orderContent.Name</td>
+                    <td>@orderContent.ItemType</td>
+                    <td>@orderContent.Quantity</td>
+                    <td>@orderContent.TotalPrice</td>
+                </tr>
+            }
         }
-    </RowTemplate>
-</MudTable>  
-
-
-
-  
+    </tbody>
+</table>
 
 @code {
-
-  
-
     private List<SaveModel> orders;
 
     protected override void OnInitialized()
     {
+        //store the data obtained from the orderitems getordermethod to orders variable on initialization
         orders = OrderItem.GetOrders();
     }
-
-   
 }

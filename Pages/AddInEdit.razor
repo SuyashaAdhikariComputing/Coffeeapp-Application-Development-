@@ -47,7 +47,7 @@
     private GlobalState _globalState { get; set; }
 
 
-    private bool _displayModal { get; set; } = false;
+    //private bool _displayModal { get; set; } = false;
 
 
     private bool dense = true;
@@ -69,7 +69,7 @@
     {
         //calls the addItem in orderItemList
         OrderItem.AddItem(_globalState.OrderContent, addInItemID, "Add-Ins", itemPrice, name);
-        JSRuntime.InvokeVoidAsync("alert", "Order placed successfully!");
+        JSRuntime.InvokeVoidAsync("alert", "Successfully Added To Cart");//alert box
     }
 
 }

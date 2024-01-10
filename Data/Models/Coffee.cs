@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coffeeapp.Data.Models
 {
-
+    // this is the model for coffee and its attributes are Id, CoffeeName and Price
     public class Coffee
     {
         public Guid Id { get; set; } = Guid.NewGuid();

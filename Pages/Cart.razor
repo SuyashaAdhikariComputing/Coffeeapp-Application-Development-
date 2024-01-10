@@ -4,7 +4,7 @@
 @inject OrderItem OrderItem
 @inject AddIn AddIn
 @inject NavigationManager NavigationManager
-
+@inject IJSRuntime JSRuntime
 
 
 
@@ -68,13 +68,16 @@
 <MudText Typo="Typo.subtitle1">Total Price: <b>Rs.@_totalAmount</b></MudText>
 
 <div class="mt-5">
-    <MudButton Variant="Variant.Filled" OnClick="clearAllCartData">Clear</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick=" clearAllCartData">Clear</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick=" CheckDiscount">Check Discount</MudButton>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick=" OnCheckout">Place Order</MudButton>
+    
 </div>
 
 
 
 @code {
+
 
     string _phone;
 
@@ -84,6 +87,7 @@
 
     private GlobalState _globalState { set; get; }
 
+    double discountPercentage = 0.10;
 
     private double _totalAmount { set; get; } = 0;
 
@@ -94,6 +98,7 @@
 
     private Coffee _coffee { set; get; }
     //calculate the total amount of the cart
+
     private double calculateTotalPrice()
     {
         double totalAmount = 0;
@@ -104,6 +109,10 @@
         }
         return totalAmount;
     }
+
+
+
+
     //remove the existing data
     private void clearAllCartData()
     {
@@ -145,18 +154,51 @@
 
     private void OnCheckout()
     {
+        if (string.IsNullOrWhiteSpace(_phone))
+        {
+            // Show an alert if the phone number is not filled
+            JSRuntime.InvokeVoidAsync("alert", "Add Phone Number");
+
+        }
         if (!string.IsNullOrWhiteSpace(_phone))
         {
             List<OrderContent> orderContentsList = Elements.ToList();
-            
+
             OrderItem.SaveOrderToCustomerJson(_phone, orderContentsList);
-            OrderItem.SavenewOrder(orderContentsList);
-            
+            OrderItem.SavenewOrder(orderContentsList,_phone);
+
             NavigationManager.NavigateTo("/ViewOrder");
         }
 
     }
-        
-   
+
+    private void CheckDiscount()
+    {
+        if (string.IsNullOrWhiteSpace(_phone))
+        {
+            // Show an alert if the phone number is not filled
+            JSRuntime.InvokeVoidAsync("alert", "Add Phone Number");
+
+        }
+        if (!string.IsNullOrWhiteSpace(_phone))
+        {
+            // Get the last order counter for the specified customer phone
+            int lastOrderCounter = OrderItem.GetLastOrderCounter(_phone);
+
+            // Check if the counter is 10
+            if (lastOrderCounter == 10)
+            {
+                double discountAmount = _totalAmount * discountPercentage;
+                _totalAmount -= discountAmount;
+                JSRuntime.InvokeVoidAsync("alert", "10% discount is made");
+            }
+            else
+            {
+                JSRuntime.InvokeVoidAsync("alert", "Customer is not elegible for discount");
+            }
+
+            
+        }
+    }
 
 }

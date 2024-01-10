@@ -22,7 +22,7 @@ namespace Coffeeapp
             builder.Services.AddSingleton<CoffeeConfig>();
             builder.Services.AddSingleton<OrderItem>();
             builder.Services.AddSingleton<LoginService>();
-
+            
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

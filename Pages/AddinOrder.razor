@@ -1,6 +1,6 @@
 ﻿@page "/AddinOrder"
 
-
+@inject IJSRuntime JSRuntime
 @inject AddIn AddIn
 @inject OrderItem OrderItem
 @inject NavigationManager NavigationManager
@@ -65,6 +65,7 @@
     {
         //calls the addItem in orderItemList
         OrderItem.AddItem(_globalState.OrderContent, addInItemID, "Add-Ins", itemPrice, name);
+        JSRuntime.InvokeVoidAsync("alert", "Successfully Added To Cart");
     }
 
 }

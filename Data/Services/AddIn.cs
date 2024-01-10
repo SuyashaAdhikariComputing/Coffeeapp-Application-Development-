@@ -11,6 +11,7 @@ namespace Coffeeapp.Data.Services
 {
     public class AddIn
     {
+        //this is the readonly list of the coffee add ins
         private readonly List<CoffeeAddIn> _CoffeeAddIn = new()
         {
             new() { Name = "Extra Sugar", Price = 10.0 },
@@ -25,36 +26,38 @@ namespace Coffeeapp.Data.Services
             new() { Name = "Nutmeg", Price = 60.0 },
         };
 
-
+        //this method is used for saving the addins data
         public void SaveAddInData(List<CoffeeAddIn> CoffeeAddInList)
         {
-            string DirPath = Utils.GetDirectoryPath(); ;
-            string addInItemsFilePath = Utils.GetAddInListPath();
+            string DirPath = Utils.GetDirectoryPath(); ;//getting the directory path
+            string addInItemsFilePath = Utils.GetAddInListPath();//getting the path of addin json file
 
-            if (!Directory.Exists(DirPath))
+            if (!Directory.Exists(DirPath))//checks if directory exists
             {
                 Directory.CreateDirectory(DirPath);
             }
 
-            var json = JsonSerializer.Serialize(CoffeeAddInList);
+            var json = JsonSerializer.Serialize(CoffeeAddInList);//serialize the data
 
-            File.WriteAllText(addInItemsFilePath, json);
+            File.WriteAllText(addInItemsFilePath, json);//write to json file
         }
 
+        //this method is used to get the addins data from json
         public List<CoffeeAddIn> GetAllAddIns()
         {
-            string addInItemsFilePath = Utils.GetAddInListPath();
+            string addInItemsFilePath = Utils.GetAddInListPath();//getting the path of addin json file
 
-            if (!File.Exists(addInItemsFilePath))
+            if (!File.Exists(addInItemsFilePath))// if file dont exists it return empty list
             {
                 return new List<CoffeeAddIn>();
             }
 
-            var json = File.ReadAllText(addInItemsFilePath);
+            var json = File.ReadAllText(addInItemsFilePath);// read content of file
 
-            return JsonSerializer.Deserialize<List<CoffeeAddIn>>(json);
+            return JsonSerializer.Deserialize<List<CoffeeAddIn>>(json);//convert the json to list
         }
 
+        //this method is used one time to store the content of readonly least to json file
         public void SeedAddInItems()
         {
             List<CoffeeAddIn> ListofAddIn = GetAllAddIns();
@@ -65,6 +68,7 @@ namespace Coffeeapp.Data.Services
             }
         }
 
+        //this is used to get the addin item by id
         public CoffeeAddIn GetAddInItemByID(String addInItemID)
         {
             List<CoffeeAddIn> AddIns = GetAllAddIns();
@@ -72,13 +76,14 @@ namespace Coffeeapp.Data.Services
             return addInItem;
         }
 
+        //this is used for updating the addin json contents
         public void UpdateAddIn(CoffeeAddIn coffeeAddIn)
         {
-            List<CoffeeAddIn> addInItemsList = GetAllAddIns();
+            List<CoffeeAddIn> addInItemsList = GetAllAddIns();//get all addin data in json file
 
             CoffeeAddIn addInItemToUpdate = addInItemsList.FirstOrDefault(_addInItem => _addInItem.Id.ToString() == coffeeAddIn.Id.ToString());
 
-            if (addInItemToUpdate == null)
+            if (addInItemToUpdate == null)//if no add in item is founf
             {
                 throw new Exception("Add-In item not found");
             }

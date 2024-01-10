@@ -10,7 +10,7 @@ namespace Coffeeapp.Data.Services
 {
     public class LoginService
     {
-
+        //defining the User Role
         private List<User> _seedUsersList = new()
         {
             new User()
@@ -26,6 +26,8 @@ namespace Coffeeapp.Data.Services
             }
         };
 
+
+        //this method checks if password is valid and assign role according to the password
         public User CheckUser(String Password)
         {
             User user = _seedUsersList.FirstOrDefault(_user => _user.Password == Password);

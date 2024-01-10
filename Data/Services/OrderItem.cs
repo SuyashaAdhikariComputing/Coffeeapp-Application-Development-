@@ -16,6 +16,7 @@ namespace Coffeeapp.Data.Services
 {
     public class OrderItem
     {
+        //this method is used for adding item to order content
         public void AddItem(List<OrderContent> _orderContent, Guid itemID, String ItemType, Double Price, string name)
         {
             OrderContent ordercontent = _orderContent.FirstOrDefault(x => x.ItemID == itemID && x.ItemType == ItemType);
@@ -45,6 +46,7 @@ namespace Coffeeapp.Data.Services
 
         }
 
+        //this method is used for deleting the item in the order content
         public void DeleteItemInList(List<OrderContent> _orderContent, Guid orderContentID)
         {
             OrderContent orderContent = _orderContent.FirstOrDefault(x => x.OrderContentID == orderContentID);
@@ -55,6 +57,8 @@ namespace Coffeeapp.Data.Services
             }
         }
 
+
+        //This method is used to configure the quantity of item
         public void QuantityOfItem(List<OrderContent> _orderContent, Guid orderContentID, String action)
         {
             OrderContent orderContent = _orderContent.FirstOrDefault(x => x.OrderContentID == orderContentID);
@@ -80,22 +84,8 @@ namespace Coffeeapp.Data.Services
             }
         }
 
-        public void SaveOrder(List<Order> CoffeeOrder)
-        {
-            string DirPath = Utils.GetDirectoryPath(); ;
-            string addInItemsFilePath = Utils.GetAddInListPath();
-
-            if (!Directory.Exists(DirPath))
-            {
-                Directory.CreateDirectory(DirPath);
-            }
-
-            var json = JsonSerializer.Serialize(CoffeeOrder);
-
-            File.WriteAllText(addInItemsFilePath, json);
-        }
-
-       public void SavenewOrder(List<OrderContent> orderContents)
+      //this method is used to save order to order Json file
+        public void SavenewOrder(List<OrderContent> orderContents,string phone)
         {
             try
             {
@@ -115,7 +105,7 @@ namespace Coffeeapp.Data.Services
 
                 SaveModel newOrder = new SaveModel
                 {
-                  
+                    Customerphone =phone,
                     OrderContents = orderContents
                 };
 
@@ -131,6 +121,7 @@ namespace Coffeeapp.Data.Services
             }
         }
 
+        //this method is used to save the order to the customer file
         public void SaveOrderToCustomerJson(string phone, List<OrderContent> orderContents)
         {
             try
@@ -151,10 +142,18 @@ namespace Coffeeapp.Data.Services
                     }
                 }
 
+                int numberOfItems = existingOrders.Count;
+
+                if (numberOfItems == 10)//changes counter to 0 if it reaches 10
+                {
+                    numberOfItems = 0;
+                }
+
                 // Create a new order
                 Order newOrder = new Order
                 {
                     OrderDate= DateTime.Now,
+                    counter=numberOfItems+1,
                     OrderContents = orderContents
                 };
 
@@ -171,6 +170,7 @@ namespace Coffeeapp.Data.Services
             }
         }
 
+        // this is used to get the order from the order file 
         public List<SaveModel> GetOrders()
         {
             string orderFilePath = Utils.GetOrderPath();
@@ -182,6 +182,39 @@ namespace Coffeeapp.Data.Services
             return new List<SaveModel>();
         }
 
+        //this is used to get the last order from the customer file and check the counter of the order
+        public int GetLastOrderCounter(string phone)
+        {
+            try
+            {
+                string orderFilePath = Utils.GetCustomerPath(phone);
+
+                if (File.Exists(orderFilePath))
+                {
+                    string existingData = File.ReadAllText(orderFilePath);
+
+                    if (!string.IsNullOrWhiteSpace(existingData))
+                    {
+                        List<Order> existingOrders = JsonSerializer.Deserialize<List<Order>>(existingData);
+
+                        // Check if there are any existing orders
+                        if (existingOrders.Any())
+                        {
+                            // Get the last order and return its counter value
+                            Order lastOrder = existingOrders.Last();
+                            return lastOrder.counter;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting last order counter from JSON: {ex.Message}");
+            }
+
+            // Return a default value if there is an error or no existing orders
+            return 0;
+        }
     }
-    }
+}
 

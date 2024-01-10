@@ -1,7 +1,7 @@
 ﻿@page "/Coffeeorder"
 @inject CoffeeConfig CoffeeConfig
 @inject OrderItem OrderItem
-
+@inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 
 <MudTable Items="@Elements"
@@ -54,6 +54,7 @@
     {
         //calls the addItem in orderItemList
         OrderItem.AddItem(_globalState.OrderContent, addInItemID, "Coffee", itemPrice, name);
+        JSRuntime.InvokeVoidAsync("alert", "Successfully Added to Cart");
     }
 
 }

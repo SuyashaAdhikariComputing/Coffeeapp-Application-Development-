@@ -1,7 +1,7 @@
 ﻿@page "/CoffeeEdit"
 @inject CoffeeConfig CoffeeConfig
 @inject OrderItem OrderItem
-
+@inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 
 <MudTable Items="@Elements"
@@ -50,13 +50,14 @@
     protected override void OnInitialized()
     {
         Elements = CoffeeConfig.GetAllCoffeeFromJsonFile();
-        CoffeeConfig.SeedCofeeDetails();//Run this for first time
+        //CoffeeConfig.SeedCofeeDetails();//Run this for first time
     }
     //takes the id of the coffee and price of the coffee
     private void AddItemInCart(Guid addInItemID, double itemPrice, string name)
     {
         //calls the addItem in orderItemList
         OrderItem.AddItem(_globalState.OrderContent, addInItemID, "Coffee", itemPrice, name);
+        JSRuntime.InvokeVoidAsync("alert", "Successfully Added to cart");
     }
 
 }

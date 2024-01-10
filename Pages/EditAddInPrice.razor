@@ -5,7 +5,6 @@
 
 <h1>Edit Add-Ins</h1>
 
-<MudButton OnClick="@(()  => NavigationManager.NavigateTo("/addins"))">Back</MudButton>
 
 @if (!_isSuccess && _message != "")
 {
@@ -18,7 +17,7 @@ else if (_isSuccess && _message != "")
 
 @if (_addInItem != null)
 {
-    <div class="container-fluid mt-5">
+    @* <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-6 d-flex flex-column gap-y-3">
                 <MudTextField @bind-Value="_password" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password"></MudTextField>
@@ -28,10 +27,37 @@ else if (_isSuccess && _message != "")
                     <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="updateAddIn">
                         Update 
                     </MudButton>
+                    <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Class="mt-5" OnClick="@(()  => NavigationManager.NavigateTo("/addins"))" >
+                        Back
+                    </MudButton>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
+                <div class="card p-4">
+                    <MudTextField @bind-Value="_password" Label="Current Password" Variant="Variant.Outlined" InputType="@InputType.Password" Class="mb-3"></MudTextField>
+                    <MudTextField @bind-Value="_addInItem.Name" Label="Add-In Item Name" Variant="Variant.Outlined" Class="mb-3"></MudTextField>
+                    <MudTextField @bind-Value="_addInItem.Price" Label="Price" Variant="Variant.Outlined" Class="mb-3"></MudTextField>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" OnClick="updateAddIn">
+                            Update
+                        </MudButton>
+
+                        <MudButton Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" OnClick="@(() => NavigationManager.NavigateTo("/AddinEdit"))">
+                            Back
+                        </MudButton>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 }
 
 @code {
@@ -56,27 +82,27 @@ else if (_isSuccess && _message != "")
     {
         try
         {
-            if (String.IsNullOrEmpty(_password))
+            if (String.IsNullOrEmpty(_password))//in case password is empty
             {
                 _message = "Please Enter Password";
                 return;
             }
-            if (String.IsNullOrEmpty(_addInItem.Name))
+            if (String.IsNullOrEmpty(_addInItem.Name))//incase there is no add in name
             {
                 _message = "Please Enter Name";
                 return;
             }
-            if (_addInItem.Price <= 0)
+            if (_addInItem.Price <= 0)//incase price is set to 0
             {
                 _message = "Please Enter Valid Price";
                 return;
             }
-            if (_password != _globalState.CurrentUser.Password)
+            if (_password != _globalState.CurrentUser.Password)//in case password is incorrect
             {
                 _message = "Please Provide Correct password";
                 return;
             }
-            AddIn.UpdateAddIn(_addInItem);
+            AddIn.UpdateAddIn(_addInItem);//calls updateAddins method
             _message = "Successfully Updated!";
             _isSuccess = true;
             NavigationManager.NavigateTo("/AddinEdit");

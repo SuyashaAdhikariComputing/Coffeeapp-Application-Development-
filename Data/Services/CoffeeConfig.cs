@@ -11,6 +11,7 @@ namespace Coffeeapp.Data.Services
 {
     public class CoffeeConfig
     {
+        //private readonly list of the coffee 
         private readonly List<Coffee> _Listofcoffee = new()
         {
             new() { CoffeeName = "Flat White", Price = 190.0 },
@@ -26,35 +27,38 @@ namespace Coffeeapp.Data.Services
             new() { CoffeeName = "Decaf", Price = 240.0 }
         };
 
+        //this method saves the coffe details to the json file
         public void SaveListofcoffeeInJsonFile(List<Coffee> coffeeList)
         {
-            string DirPath = Utils.GetDirectoryPath();
-            string ListcoffeeFilePath = Utils.GetListedCofeeFilePath();
+            string DirPath = Utils.GetDirectoryPath();//gets the directory path
+            string ListcoffeeFilePath = Utils.GetListedCofeeFilePath();//get coffee list file path
 
-            if (!Directory.Exists(DirPath))
+            if (!Directory.Exists(DirPath))//checks if directory exists
             {
                 Directory.CreateDirectory(DirPath);
             }
 
             var json = JsonSerializer.Serialize(coffeeList);
 
-            File.WriteAllText(ListcoffeeFilePath, json);
+            File.WriteAllText(ListcoffeeFilePath, json);//write the content to json file
         }
 
+        // this method is used to get all the content of coffee file
         public List<Coffee> GetAllCoffeeFromJsonFile()
         {
             string ListcoffeeFilePath = Utils.GetListedCofeeFilePath();
 
-            if (!File.Exists(ListcoffeeFilePath))
+            if (!File.Exists(ListcoffeeFilePath))// if file path do not exist it return empty list
             {
                 return new List<Coffee>();
             }
 
             var json = File.ReadAllText(ListcoffeeFilePath);
 
-            return JsonSerializer.Deserialize<List<Coffee>>(json);
+            return JsonSerializer.Deserialize<List<Coffee>>(json);//change the json content to list
         }
 
+        //this file is executed for the first time
         public void SeedCofeeDetails()
         {
             List<Coffee> coffeeList = GetAllCoffeeFromJsonFile();
@@ -65,6 +69,7 @@ namespace Coffeeapp.Data.Services
             }
         }
 
+        // this method is used to get the coffee by the id
         public Coffee GetCofeeByID(String ID)
         {
             List<Coffee> coffeeList = GetAllCoffeeFromJsonFile();
@@ -72,13 +77,14 @@ namespace Coffeeapp.Data.Services
             return coffee;
         }
 
+        // this method is used to update the details
         public void UpdateDetails(Coffee coffee)
         {
-            List<Coffee> coffeeList = GetAllCoffeeFromJsonFile();
+            List<Coffee> coffeeList = GetAllCoffeeFromJsonFile();// get the coffee file path
 
             Coffee coffeeUpdate = coffeeList.FirstOrDefault(_coffee => _coffee.Id.ToString() == coffee.Id.ToString());
 
-            if (coffeeUpdate == null)
+            if (coffeeUpdate == null)// if coffee not exist
             {
                 throw new Exception("Coffee not found");
             }
@@ -86,7 +92,7 @@ namespace Coffeeapp.Data.Services
             coffeeUpdate.CoffeeName = coffee.CoffeeName;
             coffeeUpdate.Price = coffee.Price;
 
-            SaveListofcoffeeInJsonFile(coffeeList);
+            SaveListofcoffeeInJsonFile(coffeeList);//Calling save method
         }
 
        

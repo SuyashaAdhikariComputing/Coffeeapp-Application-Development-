@@ -6,12 +6,12 @@
 {
     @if (_globalState.CurrentUser.Role != Role.Admin)
     {
-        NavigationManager.NavigateTo("/Staff");
+        NavigationManager.NavigateTo("/Staff");//if global state is not admin go to staff page
     }
 
     @if (_globalState.CurrentUser.Role != Role.Staff)
     {
-        NavigationManager.NavigateTo("/Admin");
+        NavigationManager.NavigateTo("/Admin");//if global state is not staff go to admin page
     }
 }
 
@@ -26,7 +26,7 @@
     {
         if (_globalState.CurrentUser == null)
         {
-            NavigationManager.NavigateTo("/login");
+            NavigationManager.NavigateTo("/login");//if global state is null goes to login page
         }
 
         base.OnInitialized();
